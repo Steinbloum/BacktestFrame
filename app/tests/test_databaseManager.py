@@ -17,7 +17,6 @@ def test_database_path_input():
     #test good path
     dbm = DataBaseManager(good_path)
     assert os.path.isfile(good_path)
-    input()
     shutil.rmtree("/".join(good_path.split("/")[:-1])+"/")
 
     #test bad_path_allow_new : 

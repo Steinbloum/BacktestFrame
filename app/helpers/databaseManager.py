@@ -44,6 +44,8 @@ class DataBaseManager():
         """
         return sqlite3.connect(self.path_to_db)
             
-    
+    # def write_table(self, df):
+        
+
 
         
