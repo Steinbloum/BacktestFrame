@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import datetime
+from helpers.fomatter import fmt
 
 class PandasManager():
     def __init__(self) -> None:
@@ -11,32 +12,9 @@ class PandasManager():
 
     """Formatter"""
 
-    @staticmethod
-    def type_check(func):
-        """Decorator used to format a dataframe to the types in self.types
-
-        Args:
-            func (function): function returning a dataframe
-        """
-        types = {
-            "open" : float,
-            "high" : float,
-            "low" : float,
-            "close" : float,
-            "volume" : float
-        }
-
-        def wrapper(*args, **kwargs):
-
-            res = func(*args, **kwargs)
-            return res.astype({k : v for k, v in types.items() if k in res.keys()})
-
-        return wrapper
-
-
-    @type_check
+    @fmt.format_dtypes
     def format_csv_from_binance(self, df_or_path):
-        """Makes a dataframe from a csv downloaded off binance database
+        """Makes a OHLV dataframe from a csv downloaded from binance database
 
         Args:
             df_or_path (pd.DataFrame, str): can be the path to the csv file or a dataframe
@@ -49,11 +27,6 @@ class PandasManager():
         df = df[list(range(0,6))]
         df.columns = ['open_time', 'open', 'high', 'low', 'close', 'volume']
         return df
-
-
-
-
-
 
     """Datetime management, to ensure every datetime object is UTC, all time mods
         must be done by these methods """

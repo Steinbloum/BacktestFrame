@@ -1,5 +1,9 @@
 import os
 import sqlite3
+from helpers.fomatter import fmt
+import pandas as pd
+
+
 
 class DataBaseManager():
 
@@ -44,7 +48,19 @@ class DataBaseManager():
         """
         return sqlite3.connect(self.path_to_db)
             
-    # def write_table(self, df):
+    def write_table(self, df, table_name, if_exists='replace'):
+        """method to add or append to a table on the database
+
+        Args:
+            df (pd.DataFrame): the dataframe to process
+            table_name (str): the name of the db table
+            if_exists (str, optional): valid choices ['replace', 'append']. How to behave when table exists already. Defaults to 'replace'.
+        """
+
+        type_serie = pd.Series({k:v for k, v in fmt.df_types.items() if k in df.columns})
+        
+
+        
         
 
 
