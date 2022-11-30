@@ -14,7 +14,7 @@ class PandasManager():
 
     @fmt.format_dtypes
     def format_csv_from_binance(self, df_or_path):
-        """Makes a OHLV dataframe from a csv downloaded from binance database
+        """Makes a OHLV dataframe from a .csv downloaded from binance database
 
         Args:
             df_or_path (pd.DataFrame, str): can be the path to the csv file or a dataframe
@@ -38,15 +38,19 @@ class PandasManager():
             df (pd.Dataframe): dataframe to process
             target (str, optional): valid targets : "datetime", "timestamp". Defaults to "datetime".
             from_binance (bool, optional): If True, timestamps will be converted to utc datetimes. Defaults to True.
-            custom_cols (bool, list, optional): list of specific cols to convert. Defaults to False.
+            custom_cols (bool, list, optional): list of specific cols to convert. Defaults to False. #not implemented yet
         """
         
-        target_cols = ["open_time", "start", "end", "date"]
+        target_cols = ["open_time", "start", "end", "date", "start_date", "end_date"]
         for col in target_cols:
             if col in df.columns:
                 if target == 'datetime':
+                    if np.issubdtype(df[col], np.datetime64):
+                        continue
                     df[col] = [self.convert_timestamp_to_utc(x, from_binance=from_binance) for x in df[col]]
                 elif target == 'timestamp' :
+                    if df[col].dtype == int:
+                        continue
                     df[col] = [self.convert_utc_datetime_to_timestamp(x) for x in df[col]]
         return df
   
